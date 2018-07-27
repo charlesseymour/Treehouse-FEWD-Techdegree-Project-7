@@ -48,6 +48,12 @@ qwerty.addEventListener('click', (e) => {
   if (e.target.tagName === 'BUTTON') {
     e.target.classList.add("chosen");
     const letterFound = checkLetter(e.target);
+    if (letterFound == null) {
+      missed += 1;
+      var tries = document.getElementsByClassName('tries');
+      tries[tries.length-1].remove();
+      
+    }
   }
 })
 
