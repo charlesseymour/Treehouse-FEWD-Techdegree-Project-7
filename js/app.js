@@ -7,10 +7,12 @@ const phrases = [
   "drawing a blank",
   "what goes up must come down"
 ]
+const letters = document.getElementsByClassName("letter");
+const overlay = document.getElementById("overlay");
 var missed = 0;
 
 document.querySelector(".btn__reset").addEventListener('click', () => {
-  document.getElementById("overlay").style.display = "none";
+  overlay.style.display = "none";
 })
 
 function getRandomPhraseAsArray(arr) {
@@ -32,8 +34,6 @@ const phraseArray = getRandomPhraseAsArray(phrases);
 addPhraseToDisplay(phraseArray);
 
 function checkLetter(btn) {
-  const letters = document.getElementsByClassName("letter");
-  console.log(letters);
   var letter = null;
   for (i = 0; i < letters.length; i++) {
     if (letters[i].textContent == btn.textContent) {
@@ -44,6 +44,19 @@ function checkLetter(btn) {
   return letter;
 }
 
+function checkWin() {
+  var shownLetters = document.getElementsByClassName("show");
+  if (shownLetters.length == letters.length) {
+    overlay.classList.add("win");
+    overlay.getElementsByTagName("H2")[0].innerHTML = "You won!";
+    overlay.style.display = "flex";
+  } else if (missed == 5) {
+    overlay.classList.add("lose");
+    overlay.getElementsByTagName("H2")[0].innerHTML = "Sorry, you lost";
+    overlay.style.display = "flex";
+  }
+}
+
 qwerty.addEventListener('click', (e) => {
   if (e.target.tagName === 'BUTTON') {
     e.target.classList.add("chosen");
@@ -52,8 +65,10 @@ qwerty.addEventListener('click', (e) => {
       missed += 1;
       var tries = document.getElementsByClassName('tries');
       tries[tries.length-1].remove();
-      
     }
+    checkWin();
   }
 })
+
+
 
