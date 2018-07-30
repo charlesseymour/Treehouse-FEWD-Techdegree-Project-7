@@ -1,5 +1,5 @@
 const qwerty = document.getElementById("qwerty");
-const phrase = document.getElementById("phrase");
+const phrase = document.getElementById("phrase").querySelector("ul");
 const phrases = [
   "keep your eyes peeled",
   "under the weather",
@@ -10,9 +10,30 @@ const phrases = [
 const letters = document.getElementsByClassName("letter");
 const overlay = document.getElementById("overlay");
 var missed = 0;
+var tries = document.getElementsByClassName('tries');
+var reset = false;
 
 document.querySelector(".btn__reset").addEventListener('click', () => {
   overlay.style.display = "none";
+  if (reset) {
+    missed = 0;
+    while (phrase.hasChildNodes()) {
+      phrase.removeChild(phrase.lastChild);
+    }
+    for (i = 0; i < qwerty.querySelectorAll("BUTTON").length; i++) {
+      qwerty.querySelectorAll("BUTTON")[i].classList.remove("chosen");
+    }
+    var addTries = 5 - tries.length;
+    for (i = 0; i < addTries; i++) {
+      tryIcon = document.createElement("li");
+      tryIcon.classList.add("tries");
+      tryIcon.innerHTML = '<img src="images/liveHeart.png" height="35px" width="30px">';
+      document.getElementById("scoreboard").firstElementChild.appendChild(tryIcon);
+      document.getElementById("scoreboard").firstElementChild.appendChild(document.createTextNode(' '));
+    }
+  }
+  const phraseArray = getRandomPhraseAsArray(phrases);
+  addPhraseToDisplay(phraseArray);
 })
 
 function getRandomPhraseAsArray(arr) {
@@ -30,8 +51,8 @@ function addPhraseToDisplay(arr) {
   })
 }
 
-const phraseArray = getRandomPhraseAsArray(phrases);
-addPhraseToDisplay(phraseArray);
+/*const phraseArray = getRandomPhraseAsArray(phrases);
+addPhraseToDisplay(phraseArray);*/
 
 function checkLetter(btn) {
   var letter = null;
@@ -50,10 +71,12 @@ function checkWin() {
     overlay.classList.add("win");
     overlay.getElementsByTagName("H2")[0].innerHTML = "You won!";
     overlay.style.display = "flex";
+    reset = true;
   } else if (missed == 5) {
     overlay.classList.add("lose");
     overlay.getElementsByTagName("H2")[0].innerHTML = "Sorry, you lost";
     overlay.style.display = "flex";
+    reset = true;
   }
 }
 
@@ -63,7 +86,6 @@ qwerty.addEventListener('click', (e) => {
     const letterFound = checkLetter(e.target);
     if (letterFound == null) {
       missed += 1;
-      var tries = document.getElementsByClassName('tries');
       tries[tries.length-1].remove();
     }
     checkWin();
