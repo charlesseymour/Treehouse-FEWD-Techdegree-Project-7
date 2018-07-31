@@ -22,6 +22,7 @@ document.querySelector(".btn__reset").addEventListener('click', () => {
     }
     for (i = 0; i < qwerty.querySelectorAll("BUTTON").length; i++) {
       qwerty.querySelectorAll("BUTTON")[i].classList.remove("chosen");
+      qwerty.querySelectorAll("BUTTON")[i].disabled = false;
     }
     var addTries = 5 - tries.length;
     for (i = 0; i < addTries; i++) {
@@ -80,7 +81,7 @@ function checkWin() {
   }
 }
 
-qwerty.addEventListener('click', (e) => {
+/*qwerty.addEventListener('click', (e) => {
   if (e.target.tagName === 'BUTTON') {
     e.target.classList.add("chosen");
     const letterFound = checkLetter(e.target);
@@ -90,7 +91,19 @@ qwerty.addEventListener('click', (e) => {
     }
     checkWin();
   }
-})
+})*/
 
+function pressKey(e) {
+  if (e.target.tagName === 'BUTTON') {
+    e.target.classList.add("chosen");
+    e.target.disabled = true;
+    const letterFound = checkLetter(e.target);
+    if (letterFound == null) {
+      missed += 1;
+      tries[tries.length-1].remove();
+    }
+    checkWin();
+  }  
+}
 
-
+qwerty.addEventListener('click', pressKey);
