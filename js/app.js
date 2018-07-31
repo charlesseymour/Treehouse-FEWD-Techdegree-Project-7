@@ -52,9 +52,6 @@ function addPhraseToDisplay(arr) {
   })
 }
 
-/*const phraseArray = getRandomPhraseAsArray(phrases);
-addPhraseToDisplay(phraseArray);*/
-
 function checkLetter(btn) {
   var letter = null;
   for (i = 0; i < letters.length; i++) {
@@ -80,18 +77,6 @@ function checkWin() {
     reset = true;
   }
 }
-
-/*qwerty.addEventListener('click', (e) => {
-  if (e.target.tagName === 'BUTTON') {
-    e.target.classList.add("chosen");
-    const letterFound = checkLetter(e.target);
-    if (letterFound == null) {
-      missed += 1;
-      tries[tries.length-1].remove();
-    }
-    checkWin();
-  }
-})*/
 
 function pressKey(e) {
   if (e.target.tagName === 'BUTTON') {
